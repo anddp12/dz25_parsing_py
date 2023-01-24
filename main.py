@@ -1,29 +1,24 @@
-import bs4
-import requests, sys, os
+from bs4 import BeautifulSoup
+import requests
 
-import bs4
-import requests, sys, os
+# https://football.ua/italy.html
 
-
-# Потрібен парсер оголошень ОЛХ по рубрикам який буде вигружати в Excel таблицю такі дані: заголовок, опис, кількість переглядів
-# https://freelancehunt.com/project/parser-ogoloshen-olh/1160960.html
 
 headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.0; WOW64; rv:24.0) Gecko/20100101 Firefox/24.0'}
-ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
-resp = requests.get('https://www.olx.ua/d/uk/dom-i-sad/instrumenty/generatory/?utm_source=olx&utm_medium=virtual_category&utm_campaign=generator_for_blackout', headers=headers)
-resp.encoding = 'utf'
-print(os.cpu_count())
+# ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
+resp = requests.get('https://football.ua/italy.html', headers=headers).text
+# resp.encoding = 'utf'
+soup = BeautifulSoup(resp, 'html.parser')
+# print(resp)
 
-if resp.status_code == 200:
-    resp = resp.text
-    # print(resp)
-else:
-    sys.exit()
-    os.cpu_count()
+with open('index.html', 'w', encoding='utf8') as html:
+    html.write(resp)
 
-soup = bs4.BeautifulSoup(resp, 'html.parser')
+with open('index.html', encoding='utf8') as file:
+    src = file.read()
 
-title1 =  soup.find('h6', class_='css-16v5mdi er34gjf0').getText()
-price1 =  soup.find('span', class_='css-1c0ed4l').getText()
-
-print(title1, price1)
+soup1 = BeautifulSoup(src, 'lxml')
+table = soup1.find('table', class_='tournament-table')
+table_tr = table.find('tr')
+# print(table)
+print(table_tr)
