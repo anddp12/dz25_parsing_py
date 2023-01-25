@@ -38,4 +38,29 @@ with open(f'date{cur_date}.csv','w',encoding='utf8')as file:
         )
     )
 
+tbody_tr = table.find_all('tr')
+# print(tbody_tr)
 
+for td in tbody_tr:
+    num = table.find('td', class_="num").text
+    team = table.find('td', class_="team").find('a').text
+    games = table.find('td', class_="games").text
+    win = table.find('td', class_="win").text
+    draw = table.find('td', class_="draw").text
+    lose = table.find('td', class_="draw").text
+    goal = table.find('td', class_="goal").text
+    miss = table.find('td', class_="miss").text
+    diff = table.find('td', class_="diff").text
+    score = table.find('td', class_="score").text
+    form = table.find('td', class_="form").text
+    
+# print(num, team, games, win, draw,lose,goal, miss, diff, score, form)
+
+with open(f'date{cur_date}.csv','a',encoding='utf8')as file:
+    writen = csv.writer(file)
+
+    writen.writerow(
+        (
+            num, team, games, win, draw, lose, goal, miss, diff, score, form
+        )
+    )
